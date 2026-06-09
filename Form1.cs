@@ -7,11 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace SessionExamsForm
 {
     public partial class MainForm : Form
     {
+        private List<ClassSubjects> examsList = new List<ClassSubjects>();
         public MainForm()
         {
             InitializeComponent();
@@ -39,6 +41,28 @@ namespace SessionExamsForm
             {
                 ClassSubjects newSubject = new ClassSubjects(selectedSubject, dateform.DateTime);
                 listBoxCalendar.Items.Add(newSubject.SubjectData());
+                examsList.Add(newSubject);
+                UpdateCalendarDisplay();
+            }
+        }
+        private void UpdateCalendarDisplay()
+        {
+            listBoxCalendar.Items.Clear();
+            for (int i = 0; i < examsList.Count - 1; i++)
+            {
+                for (int j = 0; j < examsList.Count - i - 1; j++)
+                {
+                    if (examsList[j].DateTime > examsList[j + 1].DateTime)
+                    {
+                        ClassSubjects temp = examsList[j];
+                        examsList[j] = examsList[j + 1];
+                        examsList[j + 1] = temp;
+                    }
+                }
+            }
+            foreach (var exam in examsList)
+            {
+                listBoxCalendar.Items.Add(exam.SubjectData());
             }
         }
     }
