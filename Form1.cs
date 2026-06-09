@@ -33,7 +33,13 @@ namespace SessionExamsForm
 
         private void listBoxAll_DoubleClick(object sender, EventArgs e)
         {
-
+            string selectedSubject = listBoxAll.SelectedItem.ToString();
+            FormDateTime dateform = new FormDateTime();
+            if (dateform.ShowDialog() == DialogResult.OK)
+            {
+                ClassSubjects newSubject = new ClassSubjects(selectedSubject, dateform.DateTime);
+                listBoxCalendar.Items.Add(newSubject.SubjectData());
+            }
         }
     }
 }
